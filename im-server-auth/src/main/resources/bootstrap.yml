@@ -1,0 +1,67 @@
+# Tomcat
+server:
+    tomcat:
+        uri-encoding: UTF-8
+        max-threads: 1000
+        min-spare-threads: 30
+        maxHttpPostSize: 2048000
+    port: 5050
+ 
+#spring cloud 客户端应用配置
+eureka:
+   client:
+      service-url:
+         defaultZone: http://localhost:8761/eureka/
+   instance:
+      lease-expiration-duration-in-seconds: 30 #设置心跳的周期间隔(默认90s)[如果5s没响应默认服务宕机]
+      lease-renewal-interval-in-seconds: 30  #设置心跳时间间隔(默认30s)
+      instance-id: ${spring.cloud.client.ipAddress}:${server.port}    #在信息列表时显示主机名称,此项不建议使用，如使用请确保不同服务器上同一服务名称同一个端口号在eureka上注册id的唯一性（否则将不能正常注册到eureka）
+      prefer-ip-address: true       #访问路径变为IP地址
+      hostname: ${spring.cloud.client.ipAddress}
+   
+# spring配置
+spring:
+    application:
+        name: im-server-auth 
+    profiles:
+        active: dev  # 配置使用环境
+    #springboot热部署启动
+    devtools: 
+        restart: 
+            enabled: true
+            #classpath下的WEB-INF/**修改不会从新加载类
+            exclude: WEB-INF/**,views/**,static/**,upload/**
+    cloud:
+        client:
+            ipAddress: localhost
+        config:
+            fail-fast: true  #启动失败时能够快速响应
+            discovery:
+                enabled: true # 通过服务发现的方式去找配置中心
+                service-id: im-config # 配置中心的名字，直接配置名称可以在配置中心集群的时候实现负载均衡
+            name: common,data-source,redis,${spring.application.name}
+            profile: ${spring.profiles.active}
+            label: master
+
+#配置springbootAdmin中的info节点内容
+info:
+   name: ${spring.application.name}
+   description: "综合管理服务权限服务，主要用于功能集中在系统管理，包括人员管理，角色管理，菜单管理，数据导出"
+   version: 1.0
+
+management:
+   security:
+      enabled: false
+   endpoints:
+      web:
+         exposure:
+           include: '*'
+      health:
+         sensitive: false #关闭过滤敏感信息
+   endpoint:
+      health:
+         show-details: ALWAYS  #显示详细信息
+#是否开启基本的鉴权，默认为true
+security: 
+   basic:
+      enabled: false

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.sinux</groupId>
+    <artifactId>dependencymanagement</artifactId>
+    <version>${project.version}</version>
+  </parent>
+  <artifactId>im-server</artifactId>
+  <name>im-server</name>
+  <version>1.0</version>
+  <packaging>pom</packaging>
+  
+  <!-- 申明版本号 -->
+	<properties>
+		<imServer.version>1.0</imServer.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+	</properties>
+  <modules>
+	 <module>im-server-auth</module>
+    <module>im-server-container</module>
+  </modules>
+</project>
